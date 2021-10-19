@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>DP测试</title>
+</head>
+
+<body>
+    <input id="dplink" type="text" placeholder="输入DP地址" />
+    <input type="button" value="添加" onclick="add()" />
+    <input type="button" value="清空" onclick="cleartxt()" />
+    <HR>
+</body>
+<script>
+    function add() {
+        var dplink = document.getElementById("dplink")
+        console.log(dplink.value)
+        if (dplink.value) {
+            var a = document.createElement("a")
+            a.innerHTML = dplink.value
+            a.setAttribute("href", dplink.value)
+            document.body.appendChild(a)
+            document.body.appendChild(document.createElement("br"))
+        } else {
+            alert("地址不能为空")
+        }
+    }
+    function cleartxt() {
+        var dplink = document.getElementById("dplink")
+        dplink.value = ""
+    }
+</script>
+
+</html>
