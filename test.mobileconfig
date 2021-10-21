@@ -5,7 +5,7 @@
         <key>PayloadContent</key>
         <dict>
             <key>URL</key>
-            <string>https://www.pgyer.com/tools/udid/retrieve</string>
+            <string>https://happytour.github.io/toufangdptest</string>
             <key>DeviceAttributes</key>
             <array>
                 <string>DEVICE_NAME</string>
@@ -19,9 +19,9 @@
             </array>
         </dict>
         <key>PayloadOrganization</key>
-        <string>www.pgyer.com</string>
+        <string>happytour.github.io</string>
         <key>PayloadDisplayName</key>
-        <string>Ëí≤ÂÖ¨Ëã±(PGYER)</string>
+        <string>happytour.github.io</string>
         <key>PayloadVersion</key>
         <integer>1</integer>
         <key>PayloadUUID</key>
@@ -29,7 +29,7 @@
         <key>PayloadIdentifier</key>
         <string>com.pgyer.profile-service</string>
         <key>PayloadDescription</key>
-        <string>ËØ•ÈÖçÁΩÆÊñá‰ª∂Â∞ÜÂ∏ÆÂä©Áî®Êà∑Ëé∑ÂèñÂΩìÂâçiOSËÆæÂ§áÁöÑUDIDÂè∑Á†Å„ÄÇThis profile will be used to find and display your current device's UDID.</string>
+        <string>https://happytour.github.io/toufangdptest</string>
         <key>PayloadType</key>
         <string>Profile Service</string>
     </dict>
