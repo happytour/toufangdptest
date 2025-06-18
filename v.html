@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>!function(e){if(!window.vivojsbridge||!e.WeiwoJSBridge){var n,o,r,t=navigator.userAgent,a=/vivospace/i.test(t),i=parseInt((n="vvc_app_version",o=(o=document.cookie.match(new RegExp("(?:^|;\\s)"+encodeURIComponent(n)+"=(.*?)(?:;\\s|$)")))?decodeURIComponent(o[1]):""),10),s=(!a||isNaN(i),[]),c=!1,l=1e3,d={},g={},u="jsBridge",p={call:"javacall",common:"javacommon",result:"javaresponse"},f=["toast","copy","isPackageInstall","openAppByPackage","openAppByDeepLink","download","getNetType","registerBack","unregisterBack","webBackPress","hideSoftKeyBoard","requestedOrientation","exit","share","add","webViewFull","enableSoftInputHiden","login"];e.WeiwoJSBridge={call:function(e,n,o){I(e,n,o,"call")},callCommon:S,callResult:function(e,n){I(e,n,null,"result")},registerHandler:h,registHandler:h,_continueSendMsg:B,_handleMessageFromNative:function(e){var n,o,t;try{n=JSON.parse(e)||{}}catch(e){n={}}t=n.handlerjsName,"request"===n.msgtype?o=g[t]:"response"===n.msgtype&&(o=d[t],t in d&&delete d[t]),"function"==typeof o&&o(function(n){var o;try{o=JSON.parse(n)}catch(e){o=n}return o}(n.requestdata),n)}};var m=e.WeiwoJSBridge;e.vivojsbridge=e.vivoJsBridge=e.WeiwoJSBridge;for(var v=0,y=f.length;v<y;v++){var w=f[v];m[w]=function(o){return function(e,n){S(o,e,n)}}(w)}(r=document.createElement("iframe")).style.display="none",document.documentElement.appendChild(r)}function B(){console.log("JsBridge _continueSendMsg");var e=s.shift();if(void 0===e)c=!1;else{c=!0;var n=e.msg,o=e.action,t=n.funName,a=n.params,i=n.callbackID;console.log("JsBridge call "+t),r.src=u+"://"+p[o]+"/"+t+"?callback="+encodeURIComponent(i)+"&data="+encodeURIComponent(JSON.stringify(a))}}function I(e,n,o,t){if(e&&"string"==typeof e){n&&"object"==typeof n||(n={});var a,i,r=String(l++);"function"==typeof o&&(d[r]=o),a={funName:e,params:n,callbackID:r},i=t,console.log("JsBridge _sendMsg _sendMsgQueueRunning "+c),s.push({msg:a,action:i}),c&&!window.navigator.userAgent.toUpperCase().match(/(IPHONE|IPAD|IPOD|IOS)/i)||B()}}function S(e,n,o){I(e,n,o,"common")}function h(e,n){"string"==typeof e&&"function"==typeof n&&(g[e]=n)}}(window);</script>
 </head>
 
 <body>
     v test
     <script type="text/javascript">
-        window.location.replace('tbopen://m.taobao.com/tbopen/index.html?h5Url=https%3A%2F%2Fm.tb.cn%2Fh.6rEyPLv%3Ftk%3D1fjTViAXmW7');
+        WeiwoJSBridge.callCommon('exit');
     </script>
 </body>
 
