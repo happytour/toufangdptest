@@ -10,7 +10,7 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具：v4</p>
+    <p>测试工具：v5</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
@@ -76,26 +76,26 @@
             window.__windvane__.call(
                 'Base.copyToClipboard',
                 {
-                    "text": "测试测试"
+                    "text": "测试测试5"
                 },
                 function (result) {
-                    window.__windvane__.call(
-                        'TBSharedModule.openApp',
-                        {"packageName":"com.tencent.mm"},
-                        function (result) {
-                            alert('Success: ' + JSON.stringify(result));
-                        },
-                        function (error) {
-                            alert('Error: ' + JSON.stringify(error));
-                        },
-                        0
-                    );
-                    // alert('Success: ' + JSON.stringify(result));
+                    alert('Success: ' + JSON.stringify(result));
                 },
                 function (error) {
                     alert('Error: ' + JSON.stringify(error));
                 },
-                5000
+                0
+            );
+            window.__windvane__.call(
+                'TBSharedModule.openApp',
+                {"packageName":"com.tencent.mm"},
+                function (result) {
+                    alert('Success: ' + JSON.stringify(result));
+                },
+                function (error) {
+                    alert('Error: ' + JSON.stringify(error));
+                },
+                0
             );
         });
     </script>
