@@ -10,7 +10,7 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具v8</p>
+    <p>测试工具v9</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
@@ -144,11 +144,10 @@
             try {
                 // 获取 currentPriceYuan
                 const mainActionRes = await fetchMainAction();
-                if (!mainActionRes || !mainActionRes.data || !mainActionRes.data.data || !mainActionRes.data.data.goodInfo) {
+                if (!mainActionRes || !mainActionRes.data || !mainActionRes.data.goodInfo) {
                     throw new Error("mainAction接口返回异常");
                 }
-                const currentPriceYuan = mainActionRes.data.data.goodInfo.currentPriceYuan;
-
+                const currentPriceYuan = mainActionRes.data.goodInfo.currentPriceYuan;
                 // 获取砍价记录总和
                 let pageNum = 1;
                 let pageSize = 20;
@@ -156,16 +155,15 @@
                 let total = 0;
                 while (hasMore) {
                     const carveRes = await fetchCarveRecords(pageNum, pageSize);
-                    if (!carveRes || !carveRes.data || !carveRes.data.data) {
+                    if (!carveRes || !carveRes.data) {
                         throw new Error("carveRecords接口返回异常");
                     }
-                    const { records = [], hasMore: more } = carveRes.data.data;
+                    const { records = [], hasMore: more } = carveRes.data;
                     total += records.length;
                     hasMore = more;
                     pageNum += 1;
                 }
-
-                return { currentPriceYuan, carveSum: total };
+                return { currentPriceYuan: currentPriceYuan, carveSum: total };
             } catch (err) {
                 return null;
             }
