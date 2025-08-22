@@ -10,7 +10,7 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具</p>
+    <p>测试工具：v1</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
@@ -62,9 +62,20 @@
             );
         });
         document.getElementById('showSharedMenu').addEventListener('click', function () {
+            // window.__windvane__.call(
+            //     'TBSharedModule.showSharedMenu',
+            //     {"businessId":"farmkankanjia","title":"我正在砍价，急需助力","text":"无套路，可随时下单，来一起玩","image":"https://img.alicdn.com/imgextra/i1/O1CN01htK2Ml240HOEeolFE_!!6000000007328-0-tps-480-480.jpg","url":"https://pages-fast.m.taobao.com/wow/z/hdwk/farm-ssr/bargain-backflow?disableNav=YES&forbidRefineType=goOut&shareKey=0VLoXE6S7edMrxPkCkLBEBv","templateParams":{"singleTarget":"wxfriend-taopassword"}},
+            //     function (result) {
+            //         alert('Success: ' + JSON.stringify(result));
+            //     },
+            //     function (error) {
+            //         alert('Error: ' + JSON.stringify(error));
+            //     },
+            //     5000
+            // );
             window.__windvane__.call(
-                'TBSharedModule.showSharedMenu',
-                {"businessId":"farmkankanjia","title":"我正在砍价，急需助力","text":"无套路，可随时下单，来一起玩","image":"https://img.alicdn.com/imgextra/i1/O1CN01htK2Ml240HOEeolFE_!!6000000007328-0-tps-480-480.jpg","url":"https://pages-fast.m.taobao.com/wow/z/hdwk/farm-ssr/bargain-backflow?disableNav=YES&forbidRefineType=goOut&shareKey=0VLoXE6S7edMrxPkCkLBEBv","templateParams":{"singleTarget":"wxfriend-taopassword"}},
+                'TBSharedModule.openApp',
+                {"packageName":"com.tencent.mm"},
                 function (result) {
                     alert('Success: ' + JSON.stringify(result));
                 },
