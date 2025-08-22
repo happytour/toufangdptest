@@ -10,7 +10,7 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具：v3</p>
+    <p>测试工具：v4</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
@@ -79,7 +79,6 @@
                     "text": "测试测试"
                 },
                 function (result) {
-                    alert('Success: ' + JSON.stringify(result));
                     window.__windvane__.call(
                         'TBSharedModule.openApp',
                         {"packageName":"com.tencent.mm"},
@@ -91,6 +90,7 @@
                         },
                         0
                     );
+                    // alert('Success: ' + JSON.stringify(result));
                 },
                 function (error) {
                     alert('Error: ' + JSON.stringify(error));
