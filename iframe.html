@@ -10,7 +10,7 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具v9</p>
+    <p>测试工具v10</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
@@ -148,12 +148,15 @@
                     throw new Error("mainAction接口返回异常");
                 }
                 const currentPriceYuan = mainActionRes.data.goodInfo.currentPriceYuan;
+                await new Promise(resolve => setTimeout(resolve, 500));
                 // 获取砍价记录总和
                 let pageNum = 1;
                 let pageSize = 20;
                 let hasMore = true;
                 let total = 0;
                 while (hasMore) {
+                    //这里添加0.2秒-08秒的延时，防止请求过快导致接口异常
+                    await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 600));
                     const carveRes = await fetchCarveRecords(pageNum, pageSize);
                     if (!carveRes || !carveRes.data) {
                         throw new Error("carveRecords接口返回异常");
@@ -184,11 +187,23 @@
                     "text": text
                 },
                 function (result) {
-                    call(
-                        'TBSharedModule.openApp',
-                        { "packageName": "com.tencent.mm" },
+                    call('WVUIToast.toast',
+                        {
+                            "message": "已复制到剪切板，正在打开微信",
+                            "duration": 2000
+                        },
                         function (result) {
-                            // alert('Success: ' + JSON.stringify(result));
+                            call(
+                                'TBSharedModule.openApp',
+                                { "packageName": "com.tencent.mm" },
+                                function (result) {
+                                    // alert('Success: ' + JSON.stringify(result));
+                                },
+                                function (error) {
+                                    alert('Error: ' + JSON.stringify(error));
+                                },
+                                5000
+                            );
                         },
                         function (error) {
                             alert('Error: ' + JSON.stringify(error));
