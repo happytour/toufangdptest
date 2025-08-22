@@ -10,11 +10,11 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具v7</p>
+    <p>测试工具v8</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
-    <style>
+    <!-- <style>
         button {
             height: 50px;
             font-size: 16px;
@@ -24,7 +24,7 @@
         <button id="mainAction">mainAction</button>
         <button id="carveRecords">carveRecords</button>
         <button id="showSharedMenu">showSharedMenu</button>
-    </div>
+    </div> -->
     <script>
         // 存储回调函数
         const pendingCallbacks = {};
@@ -62,58 +62,135 @@
                 }
             }
         });
-        document.getElementById('mainAction').addEventListener('click', function () {
-            call(
-                'MtopWVPlugin.send',
-                { "api": "mtop.tmall.farm.gaia.base.new.extra.set.security", "data": { "bizCode": "Bargaining", "params": "{\"action\":\"mainAction\",\"hdFrom\":\"farm_main_kkj\"}", "asac": "2A247225H5RHA0R0BPN6HG" }, "v": "1.0", "type": "originaljson", "ecode": 0, "timeout": 5000, "needLogin": false, "isSec": 1, "secType": 2, "key": "bargain.mainAction", "preventFallback": true, "param": { "bizCode": "Bargaining", "params": "{\"action\":\"mainAction\",\"hdFrom\":\"farm_main_kkj\"}", "asac": "2A247225H5RHA0R0BPN6HG" }, "sessionOption": "AutoLoginOnly" },
-                function (result) {
-                    alert('Success: ' + JSON.stringify(result));
-                },
-                function (error) {
-                    alert('Error: ' + JSON.stringify(error));
-                },
-                5000
-            );
+
+        async function fetchMainAction() {
+            return new Promise((resolve, reject) => {
+                call(
+                    'MtopWVPlugin.send',
+                    {
+                        api: "mtop.tmall.farm.gaia.base.new.extra.set.security",
+                        data: {
+                            bizCode: "Bargaining",
+                            params: JSON.stringify({
+                                action: "mainAction",
+                                hdFrom: "farm_main_kkj"
+                            }),
+                            asac: "2A247225H5RHA0R0BPN6HG"
+                        },
+                        v: "1.0",
+                        type: "originaljson",
+                        ecode: 0,
+                        timeout: 5000,
+                        needLogin: false,
+                        isSec: 1,
+                        secType: 2,
+                        key: "bargain.mainAction",
+                        preventFallback: true,
+                        param: {
+                            bizCode: "Bargaining",
+                            params: JSON.stringify({
+                                action: "mainAction",
+                                hdFrom: "farm_main_kkj"
+                            }),
+                            asac: "2A247225H5RHA0R0BPN6HG"
+                        },
+                        sessionOption: "AutoLoginOnly"
+                    },
+                    result => resolve(result),
+                    error => reject(error),
+                    5000
+                );
+            });
+        }
+
+        async function fetchCarveRecords(pageNum = 1, pageSize = 20) {
+            return new Promise((resolve, reject) => {
+                call(
+                    'MtopWVPlugin.send',
+                    {
+                        api: "mtop.tmall.farm.gaia.base.new.extra.set",
+                        data: {
+                            bizCode: "Bargaining",
+                            params: JSON.stringify({
+                                action: "carveRecords",
+                                pageNum,
+                                pageSize
+                            })
+                        },
+                        v: "1.0",
+                        type: "originaljson",
+                        ecode: 0,
+                        timeout: 5000,
+                        needLogin: false,
+                        preventFallback: true,
+                        param: {
+                            bizCode: "Bargaining",
+                            params: JSON.stringify({
+                                action: "carveRecords",
+                                pageNum,
+                                pageSize
+                            })
+                        },
+                        sessionOption: "AutoLoginOnly"
+                    },
+                    result => resolve(result),
+                    error => reject(error),
+                    5000
+                );
+            });
+        }
+
+        async function getCurrentPriceAndCarveSum() {
+            try {
+                // 获取 currentPriceYuan
+                const mainActionRes = await fetchMainAction();
+                if (!mainActionRes || !mainActionRes.data || !mainActionRes.data.data || !mainActionRes.data.data.goodInfo) {
+                    throw new Error("mainAction接口返回异常");
+                }
+                const currentPriceYuan = mainActionRes.data.data.goodInfo.currentPriceYuan;
+
+                // 获取砍价记录总和
+                let pageNum = 1;
+                let pageSize = 20;
+                let hasMore = true;
+                let total = 0;
+                while (hasMore) {
+                    const carveRes = await fetchCarveRecords(pageNum, pageSize);
+                    if (!carveRes || !carveRes.data || !carveRes.data.data) {
+                        throw new Error("carveRecords接口返回异常");
+                    }
+                    const { records = [], hasMore: more } = carveRes.data.data;
+                    total += records.length;
+                    hasMore = more;
+                    pageNum += 1;
+                }
+
+                return { currentPriceYuan, carveSum: total };
+            } catch (err) {
+                return null;
+            }
+        }
+        // 使用示例
+        getCurrentPriceAndCarveSum().then(result => {
+            if (result) {
+                copyAndGotoWeixin("余额：" + result.currentPriceYuan + '；砍价记录数：' + result.carveSum);
+            } else {
+                alert("获取数据失败");
+            }
         });
-        document.getElementById('carveRecords').addEventListener('click', function () {
-            call(
-                'MtopWVPlugin.send',
-                { "api": "mtop.tmall.farm.gaia.base.new.extra.set", "data": { "bizCode": "Bargaining", "params": "{\"action\":\"carveRecords\",\"pageNum\":1,\"pageSize\":20}" }, "v": "1.0", "type": "originaljson", "ecode": 0, "timeout": 5000, "needLogin": false, "preventFallback": true, "param": { "bizCode": "Bargaining", "params": "{\"action\":\"carveRecords\",\"pageNum\":1,\"pageSize\":20}" }, "sessionOption": "AutoLoginOnly" },
-                function (result) {
-                    alert('Success: ' + JSON.stringify(result));
-                },
-                function (error) {
-                    alert('Error: ' + JSON.stringify(error));
-                },
-                5000
-            );
-        });
-        document.getElementById('showSharedMenu').addEventListener('click', function () {
+
+        function copyAndGotoWeixin(text) {
             call(
                 'Base.copyToClipboard',
                 {
-                    "text": "测试测试5"
+                    "text": text
                 },
                 function (result) {
                     call(
-                        'WVUIDialog.alert',
-                        {
-                            "title": "复制成功",
-                            "message": "前往微信找到好友粘贴",
-                            "okbutton": "前往"
-                        },
+                        'TBSharedModule.openApp',
+                        { "packageName": "com.tencent.mm" },
                         function (result) {
-                            call(
-                                'TBSharedModule.openApp',
-                                { "packageName": "com.tencent.mm" },
-                                function (result) {
-                                    alert('Success: ' + JSON.stringify(result));
-                                },
-                                function (error) {
-                                    alert('Error: ' + JSON.stringify(error));
-                                },
-                                5000
-                            );
+                            // alert('Success: ' + JSON.stringify(result));
                         },
                         function (error) {
                             alert('Error: ' + JSON.stringify(error));
@@ -126,7 +203,7 @@
                 },
                 5000
             );
-        });
+        };
     </script>
 </body>
 
