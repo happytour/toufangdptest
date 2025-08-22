@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="format-detection" content="telephone=no">
+    <title>测试工具</title>
+</head>
+
+<body>
+    <h1>测试工具</h1>
+    <p>测试工具</p>
+    <!--下面按钮放到一列-->
+    <!--下面按钮高度变高-->
+    <!--按钮之间间距变大-->
+    <style>
+        button {
+            height: 50px;
+            font-size: 16px;
+        }
+    </style>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        <button id="mainAction">mainAction</button>
+        <button id="carveRecords">carveRecords</button>
+        <a
+            href='intent://share/#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT=有趣的网页分享;S.android.intent.extra.TEXT=看看这个有趣的网页：https://www.example.com;end'>
+            点击分享网页链接
+        </a>
+        <button id="showSharedMenu">showSharedMenu</button>
+    </div>
+    <script>
+        window.__windvane__ = window.__windvane__ || {
+            call: function (api, data, successCallback, errorCallback, timeout) {
+                alert("Your browser does not support WindVane API calls. Please ensure you are using a compatible browser.");
+            },
+        };
+        document.getElementById('mainAction').addEventListener('click', function () {
+            window.__windvane__.call(
+                'MtopWVPlugin.send',
+                { "api": "mtop.tmall.farm.gaia.base.new.extra.set.security", "data": { "bizCode": "Bargaining", "params": "{\"action\":\"mainAction\",\"hdFrom\":\"farm_main_kkj\"}", "asac": "2A247225H5RHA0R0BPN6HG" }, "v": "1.0", "type": "originaljson", "ecode": 0, "timeout": 5000, "needLogin": false, "isSec": 1, "secType": 2, "key": "bargain.mainAction", "preventFallback": true, "param": { "bizCode": "Bargaining", "params": "{\"action\":\"mainAction\",\"hdFrom\":\"farm_main_kkj\"}", "asac": "2A247225H5RHA0R0BPN6HG" }, "sessionOption": "AutoLoginOnly" },
+                function (result) {
+                    alert('Success: ' + JSON.stringify(result));
+                },
+                function (error) {
+                    alert('Error: ' + JSON.stringify(error));
+                },
+                5000
+            );
+        });
+        document.getElementById('carveRecords').addEventListener('click', function () {
+            window.__windvane__.call(
+                'MtopWVPlugin.send',
+                { "api": "mtop.tmall.farm.gaia.base.new.extra.set", "data": { "bizCode": "Bargaining", "params": "{\"action\":\"carveRecords\",\"pageNum\":1,\"pageSize\":20}" }, "v": "1.0", "type": "originaljson", "ecode": 0, "timeout": 5000, "needLogin": false, "preventFallback": true, "param": { "bizCode": "Bargaining", "params": "{\"action\":\"carveRecords\",\"pageNum\":1,\"pageSize\":20}" }, "sessionOption": "AutoLoginOnly" },
+                function (result) {
+                    alert('Success: ' + JSON.stringify(result));
+                },
+                function (error) {
+                    alert('Error: ' + JSON.stringify(error));
+                },
+                5000
+            );
+        });
+        document.getElementById('showSharedMenu').addEventListener('click', function () {
+            window.__windvane__.call(
+                'TBSharedModule.showSharedMenu',
+                {"businessId":"farmkankanjia","title":"我正在砍价，急需助力","text":"无套路，可随时下单，来一起玩","image":"https://img.alicdn.com/imgextra/i1/O1CN01htK2Ml240HOEeolFE_!!6000000007328-0-tps-480-480.jpg","url":"https://pages-fast.m.taobao.com/wow/z/hdwk/farm-ssr/bargain-backflow?disableNav=YES&forbidRefineType=goOut&shareKey=0VLoXE6S7edMrxPkCkLBEBv","templateParams":{"singleTarget":"wxfriend-taopassword"}},
+                function (result) {
+                    alert('Success: ' + JSON.stringify(result));
+                },
+                function (error) {
+                    alert('Error: ' + JSON.stringify(error));
+                },
+                5000
+            );
+        });
+    </script>
+</body>
+
+</html>
