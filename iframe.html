@@ -10,7 +10,7 @@
 
 <body>
     <h1>测试工具</h1>
-    <p>测试工具：v5</p>
+    <p>测试工具：v6</p>
     <!--下面按钮放到一列-->
     <!--下面按钮高度变高-->
     <!--按钮之间间距变大-->
@@ -23,20 +23,53 @@
     <div style="display: flex; flex-direction: column; gap: 10px;">
         <button id="mainAction">mainAction</button>
         <button id="carveRecords">carveRecords</button>
-        <a
+        <!-- <a
             href='intent://share/#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT=有趣的网页分享;S.android.intent.extra.TEXT=看看这个有趣的网页：https://www.example.com;end'>
             点击分享网页链接
-        </a>
+        </a> -->
         <button id="showSharedMenu">showSharedMenu</button>
     </div>
     <script>
-        window.__windvane__ = window.__windvane__ || {
-            call: function (api, data, successCallback, errorCallback, timeout) {
-                alert("Your browser does not support WindVane API calls. Please ensure you are using a compatible browser.");
-            },
-        };
+        // 存储回调函数
+        const pendingCallbacks = {};
+        let callbackId = 0;
+
+        // 定义call函数
+        function call(api, data, success, error, timeout) {
+            const id = 'callback_' + (callbackId++);
+            // 存储回调
+            pendingCallbacks[id] = {
+                success: success,
+                error: error
+            };
+            // 发送到父页面
+            window.parent.postMessage({
+                type: 'iframe',
+                callbackId: id,
+                api: api,
+                data: data,
+                timeout: timeout
+            }, '*');
+        }
+
+        // 监听父页面返回的消息
+        window.addEventListener('message', function (event) {
+            if (event.data && event.data.type === 'iframe') {
+                const { callbackId, success, data } = event.data;
+                const callback = pendingCallbacks[callbackId];
+                if (callback) {
+                    if (success) {
+                        callback.success(data);
+                    } else {
+                        callback.error(data);
+                    }
+                    // 删除已处理的回调
+                    delete pendingCallbacks[data.callbackId];
+                }
+            }
+        });
         document.getElementById('mainAction').addEventListener('click', function () {
-            window.__windvane__.call(
+            call(
                 'MtopWVPlugin.send',
                 { "api": "mtop.tmall.farm.gaia.base.new.extra.set.security", "data": { "bizCode": "Bargaining", "params": "{\"action\":\"mainAction\",\"hdFrom\":\"farm_main_kkj\"}", "asac": "2A247225H5RHA0R0BPN6HG" }, "v": "1.0", "type": "originaljson", "ecode": 0, "timeout": 5000, "needLogin": false, "isSec": 1, "secType": 2, "key": "bargain.mainAction", "preventFallback": true, "param": { "bizCode": "Bargaining", "params": "{\"action\":\"mainAction\",\"hdFrom\":\"farm_main_kkj\"}", "asac": "2A247225H5RHA0R0BPN6HG" }, "sessionOption": "AutoLoginOnly" },
                 function (result) {
@@ -49,7 +82,7 @@
             );
         });
         document.getElementById('carveRecords').addEventListener('click', function () {
-            window.__windvane__.call(
+            call(
                 'MtopWVPlugin.send',
                 { "api": "mtop.tmall.farm.gaia.base.new.extra.set", "data": { "bizCode": "Bargaining", "params": "{\"action\":\"carveRecords\",\"pageNum\":1,\"pageSize\":20}" }, "v": "1.0", "type": "originaljson", "ecode": 0, "timeout": 5000, "needLogin": false, "preventFallback": true, "param": { "bizCode": "Bargaining", "params": "{\"action\":\"carveRecords\",\"pageNum\":1,\"pageSize\":20}" }, "sessionOption": "AutoLoginOnly" },
                 function (result) {
@@ -73,24 +106,24 @@
             //     },
             //     5000
             // );
-            window.__windvane__.call(
+            call(
                 'Base.copyToClipboard',
                 {
                     "text": "测试测试5"
                 },
                 function (result) {
                     alert('Success: ' + JSON.stringify(result));
-                },
-                function (error) {
-                    alert('Error: ' + JSON.stringify(error));
-                },
-                0
-            );
-            window.__windvane__.call(
-                'TBSharedModule.openApp',
-                {"packageName":"com.tencent.mm"},
-                function (result) {
-                    alert('Success: ' + JSON.stringify(result));
+                    call(
+                        'TBSharedModule.openApp',
+                        { "packageName": "com.tencent.mm" },
+                        function (result) {
+                            alert('Success: ' + JSON.stringify(result));
+                        },
+                        function (error) {
+                            alert('Error: ' + JSON.stringify(error));
+                        },
+                        0
+                    );
                 },
                 function (error) {
                     alert('Error: ' + JSON.stringify(error));
